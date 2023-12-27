@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>유튜브 노래 추천</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+           
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('casestte-4398267_1280.webp'); /* 이미지 경로 변경 가능 */
+            background-size: cover; /* 화면에 맞게 이미지 크기 조절 */
+        }
+
+        #recommendation {
+            text-align: center;
+            margin-top: 200px; /* 버튼과 노래 제목을 더 위로 올리기 위한 margin-top 값 조절 */
+        }
+
+        #songTitle {
+            margin-top: 200px; /* 버튼과 노래 제목 사이의 간격 조절 */
+            font-size: 24px;
+            color: #ffffff;
+        }
+
+        #recommendation button {
+            background-color: #ffffff;
+            color: #1e2366;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            margin-top: 120px; /* 버튼과 노래 제목 사이의 간격 조절 */
+        }
+
+        #recommendation button:hover {
+            background-color: #c8e9ff;
+        }
+
+        #songTitle {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="recommendation">
+        <button onclick="recommendSong()">노래 추천 받기</button>
+        <h2 id="songTitle"></h2>
+    </div>
+
+    <script>
+        const songs = [
+            { title: 'Blinding Lights', artist: 'The Weeknd', link: 'https://www.youtube.com/watch?v=4NRXx6U8ABQ' },
+            { title: 'Watermelon Sugar', artist: 'Harry Styles', link: 'https://www.youtube.com/watch?v=E07s5ZYygMg' },
+            { title: 'Levitating', artist: 'Dua Lipa', link: 'https://www.youtube.com/watch?v=TUVcZfQe-Kw' },
+            { title: 'Save Your Tears', artist: 'The Weeknd & Ariana Grande', link: 'https://www.youtube.com/watch?v=XXYlFuWEuKI' },
+            { title: 'Peaches', artist: 'Justin Bieber ft. Daniel Caesar & Giveon', link: 'https://www.youtube.com/watch?v=tQ0yjYUFKAE' },
+            { title: 'Kiss Me More', artist: 'Doja Cat ft. SZA', link: 'https://www.youtube.com/watch?v=waBFplNOlpo' },
+            { title: 'Leave The Door Open', artist: 'Silk Sonic (Bruno Mars, Anderson .Paak)', link: 'https://www.youtube.com/watch?v=adLGHcj_fmA' },
+            { title: 'Montero (Call Me By Your Name)', artist: 'Lil Nas X', link: 'https://www.youtube.com/watch?v=6swmTBVI83k' },
+            { title: 'Good 4 U', artist: 'Olivia Rodrigo', link: 'https://www.youtube.com/watch?v=gNi_6U5Pm_o' },
+            { title: 'Deja Vu', artist: 'Olivia Rodrigo', link: 'https://www.youtube.com/watch?v=cii6ruuycQA' },
+            { title: 'Dynamite', artist: 'BTS', link: 'https://www.youtube.com/watch?v=gdZLi9oWNZg' },
+            { title: 'Shape of You', artist: 'Ed Sheeran', link: 'https://www.youtube.com/watch?v=JGwWNGJdvx8' },
+            { title: 'Someone You Loved', artist: 'Lewis Capaldi', link: 'https://www.youtube.com/watch?v=bCuhuePlP8o' },
+            { title: 'Dance Monkey', artist: 'Tones and I', link: 'https://www.youtube.com/watch?v=q0hyYWKXF0Q' },
+            { title: 'Havana', artist: 'Camila Cabello ft. Young Thug', link: 'https://www.youtube.com/watch?v=BQ0mxQXmLsk' },
+            { title: 'Savage Love', artist: 'Jawsh 685 x Jason Derulo', link: 'https://www.youtube.com/watch?v=x3bfa3DZ8JM' },
+            { title: 'WAP', artist: 'Cardi B ft. Megan Thee Stallion', link: 'https://www.youtube.com/watch?v=hsm4poTWjMs' },
+            { title: 'Circles', artist: 'Post Malone', link: 'https://www.youtube.com/watch?v=wsbR3MC1bGI' },
+            { title: 'Rain On Me', artist: 'Lady Gaga & Ariana Grande', link: 'https://www.youtube.com/watch?v=AoAm4om0wTs' },
+            { title: 'Old Town Road', artist: 'Lil Nas X ft. Billy Ray Cyrus', link: 'https://www.youtube.com/watch?v=w2Ov5jzm3j8' },
+            { title: 'Believer', artist: 'Imagine Dragons', link: 'https://www.youtube.com/watch?v=7wtfhZwyrcc' },
+            { title: 'Pumped Up Kicks', artist: 'Foster The People', link: 'https://www.youtube.com/watch?v=SDTZ7iX4vTQ' },
+            { title: 'Say So', artist: 'Doja Cat', link: 'https://www.youtube.com/watch?v=pok8H_KF1FA' },
+            { title: 'Sucker', artist: 'Jonas Brothers', link: 'https://www.youtube.com/watch?v=CnAmeh0-E-U' },
+            { title: 'Sugar', artist: 'Maroon 5', link: 'https://www.youtube.com/watch?v=09R8_2nJtjg' },
+            { title: 'Can\'t Stop The Feeling!', artist: 'Justin Timberlake', link: 'https://www.youtube.com/watch?v=ru0K8uYEZWw' },
+            { title: 'Sims', artist: 'Lauv', link: 'https://www.youtube.com/watch?v=3O48l3m9elE' },
+            { title: 'Too Late', artist: 'Quinn XCII, AJR', link: 'https://www.youtube.com/watch?v=wTbLH4DFXpk' },
+            { title: 'Checklist', artist: 'MAX', link: 'https://www.youtube.com/watch?v=yvYKZPE-UDM' }
+        ];
+
+        function recommendSong() {
+            const randomIndex = Math.floor(Math.random() * songs.length);
+            const recommendedSong = songs[randomIndex];
+
+            document.getElementById('songTitle').innerHTML = `<a href="${recommendedSong.link}" target="_blank">${recommendedSong.title} - ${recommendedSong.artist}</a>`;
+        }
+    </script>
+
+</body>
+</html>
